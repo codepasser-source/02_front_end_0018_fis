@@ -1,0 +1,12 @@
+@import "/source/components/helpers/variables";
+
+.component-login {
+  .title {
+    background: $n-page-background-color;
+  }
+  .avatar {
+    width: 100px;
+    height: 100px;
+    background: url(/source/images/components/login/avatar.png?__sprite);
+  }
+}

@@ -1,0 +1,15 @@
+@import "/source/components/helpers/variables";
+
+.widgets-header {
+  background: $n-page-background-color;
+  .avatar {
+    width: 100px;
+    height: 100px;
+    background: url(/source/images/widgets/headers/avatar.png?__sprite);
+  }
+  .logo {
+    width: 100px;
+    height: 100px;
+    background: url(/source/images/widgets/headers/logo.png?__sprite);
+  }
+}

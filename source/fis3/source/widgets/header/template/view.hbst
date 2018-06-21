@@ -1,0 +1,8 @@
+<div class="widgets-header">
+    <h1 class="title">{{title}}</h1>
+    <div class="logo"></div>
+    <div class="avatar"></div>
+    <div class="body">
+        {{body}}
+    </div>
+</div>

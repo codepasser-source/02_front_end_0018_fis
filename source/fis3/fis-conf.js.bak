@@ -1,0 +1,201 @@
+/**##############################################################################*
+ *######################### Global variable #####################################*
+ *###############################################################################*/
+// fis.set('namespace', 'askdog')
+fis.set('project.charset', 'utf8');
+fis.set('project.md5Length', 8);
+fis.set('project.md5Connector ', '.');
+fis.set('project.files', ['*.html', '*.css', '*.scss', '*.js', '*.coffee', '*.hbs', '*.hbst']);
+fis.set('project.ignore', ['ignore/**', 'output/**', '.git/**', 'fis-conf.js', 'README']);
+/*
+ * fileType.text default list
+ *
+ * [ 'css', 'tpl', 'js', 'php', 'txt', 'json', 'xml', 'htm', 'text', 'xhtml', 'html', 'md', 'conf', 'po', 'config', 'tmpl', 'coffee', 'less', 'sass', 'jsp', 'scss', 'manifest', 'bak', 'asp', 'tmp' ]
+ */
+fis.set('project.fileType.text', ['hbs', 'hbst']);
+/*
+ * fileType.image default list
+ *
+ * [ 'svg', 'tif', 'tiff', 'wbmp', 'png', 'bmp', 'fax', 'gif','ico', 'jfif', 'jpe', 'jpeg', 'jpg', 'woff', 'cur' ]
+ */
+fis.set('project.fileType.image', ['eot', 'ttf', 'woff2', 'swf']);
+
+/**###############################################################################*
+ *######################### Settings ############################################*
+ *###############################################################################*/
+/* CommonJs specification**/
+fis.hook('commonjs');                                       // fis3-hook-commonjs(集成)
+
+/* 页面引用资源文件打包,更改引用路径 **/
+fis.match('::package', {
+    postpackager: fis.plugin('loader', {allInOne: true})    // fis3-postpackager-loader(集成)
+});
+/* 页面引用png图片打包,针对css合并后执行 **/
+fis.match('::package', {
+    spriter: fis.plugin('csssprites', {})                   //is-spriter-csssprites(内置)
+});
+/**###############################################################################*
+ *######################### Compile #############################################*
+ *###############################################################################*/
+/* application scss compile **/
+fis.match('/source/components/(**).scss', {
+    useSprite: true,
+    rExt: '.css',
+    parser: fis.plugin('node-sass')                         // fis-parser-node-sass(集成)
+});
+fis.match('/source/widgets/(**).scss', {
+    useSprite: true,
+    rExt: '.css',
+    parser: fis.plugin('node-sass')
+});
+
+/*  application template >> handlebars-4.x > js **/
+fis.match('/source/components/(**).hbst', {
+    rExt: '.js',
+    parser: fis.plugin('handlebars-4.x')                    // fis-parser-handlebars-4.x(集成)
+});
+fis.match('/source/widgets/(**).hbst', {
+    rExt: '.js',
+    parser: fis.plugin('handlebars-4.x')
+});
+
+/* application coffee compile **/
+fis.match('/source/components/(**).coffee', {
+    id: '/components/$1',
+    isMod: true,
+    rExt: '.js',
+    parser: fis.plugin('coffee-script')                     // fis-parser-coffee-script(集成)
+});
+fis.match('/source/widgets/(**).coffee', {
+    id: '/widgets/$1',
+    isMod: true,
+    rExt: '.js',
+    parser: fis.plugin('coffee-script')
+});
+
+/**###############################################################################*
+ *######################### Package #############################################*
+ *###############################################################################*/
+
+/* library css package **/
+fis.match('/lib/bootstrap/css/bootstrap.css', {
+    packTo: '/assets/styles/askdog.css',
+    packOrder: 1
+});
+fis.match('/lib/bootstrap/css/bootstrap-theme.css', {
+    packTo: '/assets/styles/askdog.css',
+    packOrder: 2
+});
+fis.match('/lib/askdog.css', {
+    packTo: '/assets/styles/askdog.css',
+    packOrder: 3
+});
+
+/* library js package **/
+fis.match('/lib/jquery/{*,**/*}.{js,coffee}', {
+    packTo: '/assets/scripts/askdog.js',
+    packOrder: 1
+});
+fis.match('/lib/json2/{*,**/*}.{js,coffee}', {
+    packTo: '/assets/scripts/askdog.js',
+    packOrder: 2
+});
+fis.match('/lib/mod/{*,**/*}.{js,coffee}', {
+    packTo: '/assets/scripts/askdog.js',
+    packOrder: 3
+});
+fis.match('/lib/bootstrap/{*,**/*}.{js,coffee}', {
+    packTo: '/assets/scripts/askdog.js',
+    packOrder: 4
+});
+fis.match('/lib/handlebars/{*,**/*}.{js,coffee}', {
+    packTo: '/assets/scripts/askdog.js',
+    packOrder: 5
+});
+fis.match('/lib/angular/{*,**/*}.{js,coffee}', {
+    packTo: '/assets/scripts/askdog.js',
+    packOrder: 6
+});
+fis.match('/lib/askdog.{js,coffee}', {
+    packTo: '/assets/scripts/askdog.js',
+    packOrder: 7
+});
+
+/* application css package **/
+fis.match('/source/components/{*,**/*}.{css,scss}', {
+    packTo: '/assets/styles/app.css'
+});
+
+fis.match('/source/widgets/{*,**/*}.{css,scss}', {
+    packTo: '/assets/styles/app.css'
+});
+
+/* application js package **/
+fis.match('/source/components/{*,**/*}.{js,coffee}', {
+    packTo: '/assets/scripts/app.js'
+});
+fis.match('/source/widgets/{*,**/*}.{js,coffee}', {
+    packTo: '/assets/scripts/app.js'
+})
+;
+
+/**###############################################################################*
+ *######################### Release #############################################*
+ *###############################################################################*/
+/* bootstrap fonts release **/
+fis.match(/\/lib\/(.*\.(?:eot$|svg$|ttf$|woff$|woff2$))/i, {
+    release: '/assets/styles/$1'
+});
+
+/* images release **/
+fis.match(/^\/source\/images\/(.*\.(?:png$|gif$|ico$))/i, {
+    release: '/assets/images/$1'
+});
+
+fis.match(/^\/source\/images\/widgets\/(.*\.(?:png$|gif$|ico$))/i, {
+    release: '/assets/images/widgets/$1'
+});
+
+/* views release **/
+fis.match(/\/source\/views\/(.*\.(?:html$))/i, {
+    release: '$1'
+});
+fis.match(/\/source\/components\/(.*\.(?:hbs))/i, {
+    release: '/components/$1'
+});
+fis.match(/\/source\/widgets\/(.*\.(?:hbs))/i, {
+    release: '/widgets/$1'
+});
+
+/* ignore release **/
+fis.match(/\/lib\/(.*\.(?:css$|scss$))/i, {
+    release: '../ignore/lib/$1'
+});
+fis.match(/\/lib\/(.*\.(?:js$|coffee$))/i, {
+    release: '../ignore/lib/$1'
+});
+fis.match(/\/source\/(.*\.(?:css|scss$))/i, {
+    release: '../ignore/source/$1'
+});
+fis.match(/\/source\/(.*\.(?:hbst$))/i, {
+    release: '../ignore/source/$1'
+});
+fis.match(/\/source\/(.*\.(?:js$|coffee$))/i, {
+    release: '../ignore/source/$1'
+});
+
+/**###############################################################################*
+ *######################### Media ###############################################*
+ *###############################################################################*/
+/* resource files MD5 hash code **/
+fis.media('prod').match('.{js,coffee,css,scss}', {
+    useHash: true
+});
+/* javascript files optimizer **/
+fis.media('prod').match('*.{js,coffee}', {
+    optimizer: fis.plugin('uglify-js')  //fis-optimizer-uglify-js(内置)
+});
+/* css files optimizer **/
+fis.media('prod').match('*.{css,scss}', {
+    optimizer: fis.plugin('clean-css')  //fis-optimizer-clean-css(内置)
+});

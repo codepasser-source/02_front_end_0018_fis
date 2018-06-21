@@ -1,0 +1,16 @@
+# 安装NodeJS v0.10.25
+sudo apt-get install nodejs
+
+#Ubuntu 用户使用 apt-get 安装 node 后，安装的程序名叫 nodejs，需要软链成 node
+ln -s /usr/bin/nodejs /usr/bin/node
+#Windows 用户安装完成后需要在 CMD 下确认是否能执行 node 和 npm
+
+#安装fis3
+sudo npm install -g fis3 --unsafe-perm --registry=http://registry.npm.taobao.org/ --disturl=https://npm.taobao.org/dist
+
+#安裝fis插件
+sudo npm install -g fis3-hook-commonjs --registry=http://registry.npm.taobao.org/ --disturl=https://npm.taobao.org/dist
+sudo npm install -g fis3-postpackager-loader --registry=http://registry.npm.taobao.org/ --disturl=https://npm.taobao.org/dist
+sudo npm install -g fis-parser-coffee-script --registry=http://registry.npm.taobao.org/ --disturl=https://npm.taobao.org/dist
+sudo npm install -g fis-parser-handlebars-4.x --registry=http://registry.npm.taobao.org/ --disturl=https://npm.taobao.org/dist
+sudo npm install -g fis-parser-node-sass --registry=http://registry.npm.taobao.org/ --disturl=https://npm.taobao.org/dist
